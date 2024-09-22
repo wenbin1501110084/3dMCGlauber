@@ -24,16 +24,14 @@ class Glauber {
     std::unique_ptr<Nucleus> projectile;
     std::unique_ptr<Nucleus> target;
     std::set<shared_ptr<CollisionEvent>, compare_collision_time> collision_schedule;
+    
     std::vector<QCDString> QCD_string_list;
     std::vector<QCDString> remnant_string_list_;
     std::vector<CollisionEvent> collision_schedule_list_;
-    std::vector<std::vector<real>> QCD_string_output_arr_;
     std::shared_ptr<RandomUtil::Random> ran_gen_ptr_;
     bool sample_valence_quark;
     bool fluct_Nstrings_per_NN_collision_;
     real remnant_energy_loss_fraction_;
-
-    std::vector<std::vector<real>> participantList_;
 
     real impact_b;
     real yloss_param_slope;
@@ -42,30 +40,29 @@ class Glauber {
 
     real ybeam;
     real collision_energy;
-    
     int system_status_;
 
     real sigma_eff_;
     real nucleon_width_;
 
  public:
-    //Glauber() = default;
+    Glauber() = default;
     Glauber(const MCGlb::Parameters &param_in,
             shared_ptr<RandomUtil::Random> ran_gen);
     ~Glauber() {};
-
+    
     std::vector<CollisionEvent> get_collision_information() {
         return (collision_schedule_list_);
     }
-
+    
     void make_nuclei();
     real get_impact_parameter() const {return(impact_b);}
 
-    int make_collision_schedule();
+    int make_collision_schedule();// get the number of binary collisions 
     bool hit(real d2) const;
 
     int get_Npart() const;
-
+    
     //! This function creates a new collision event between two nucleons
     void create_a_collision_event(shared_ptr<Nucleon> proj,
                                   shared_ptr<Nucleon> targ);
@@ -73,9 +70,10 @@ class Glauber {
                              real &t_coll, real &z_coll) const;
 
     real compute_NN_inelastic_cross_section(real ecm) const;
-    
+
     real get_roots_from_distribution(real roots, real rootgammaN_low_cut, 
                                      real rootgammaN_up_cut, std::string nucleus_name);
+
     //! this function decides which of those binary collisions will produce
     //! QCD strings
     int decide_QCD_strings_production();
@@ -93,14 +91,11 @@ class Glauber {
     real sample_rapidity_loss_shell(real y_init) const;
     real sample_rapidity_loss_from_the_LEXUS_model(const real y_init) const;
     real sample_rapidity_loss_from_parametrization(const real y_init) const;
-    real sample_rapidity_loss_from_piecewise_parametrization(
-                                                const real y_init) const;
     real sample_rapidity_loss_from_parametrization_with_fluct(
                                                 const real y_init) const;
 
     real sample_junction_rapidity_right(real y_left, real y_right) const;
     real sample_junction_rapidity_left(real y_left, real y_right) const;
-    real sample_junction_rapidity_uniformed(real y_left, real y_right) const;
 
     //! This function performs string production between each nucleon pair
     int perform_string_production();
@@ -114,23 +109,10 @@ class Glauber {
     //! This function updates the collision schedule
     void update_collision_schedule(shared_ptr<CollisionEvent> event_happened);
 
-    void prepare_output_QCD_strings();
-    void computeCenterOfMass(real &x_o, real &y_o);
     void output_QCD_strings(std::string filename, const real Npart,
                             const real Ncoll, const real Nstrings,
-                            const real b, const unsigned int seed);
-    void output_spectators(std::string filename);
-    void prepareParticipantList();
-    std::vector<std::vector<real>> getParticipantList() {
-        prepareParticipantList();
-        return(participantList_);
-    }
-    void outputParticipants(std::string filename);
-    std::vector<std::vector<real>> get_QCD_strings_output_list() {
-        prepare_output_QCD_strings();
-        return(QCD_string_output_arr_);
-    }
-
+                            const real b);
+    
     real get_sig_eff(const real siginNN);
 };
 

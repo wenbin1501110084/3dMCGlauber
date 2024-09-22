@@ -34,45 +34,30 @@ class Parameters : public ParametersMap {
     real get_roots() const;
     real get_UPC_root_low_cut() const;
     real get_UPC_root_up_cut() const;
-    bool use_E_dependent_LB() const;
-    real get_CB() const;
-    real get_BG_proj() const;
-    real get_BG_targ() const;
-    
+
     bool use_roots_distribution() const;
     bool use_roots_cut() const;
+    int get_Pol_targ() const;
+    int get_Pol_proj() const;
 
+    bool use_E_dependent_LB() const;
     real get_lambdaB() const;
-    real get_lambdaBs() const;
-    real get_lambdaQ() const;
-    real get_lambdaQs() const;
-    real get_baryon_in_string_prob() const;
-    real get_electric_charge_in_string_prob() const;
-    
+    real get_CB() const;
     real get_shadowing_factor() const;
 
     int get_QCD_string_production_mode() const;
     int get_QCD_string_evolution_mode() const;
     int get_rapidity_loss_method() const;
 
-    int get_N_sea_partons() const;
-
     // if False do assume baryon number at string ends
     // if True transport baryon number according to cosh(y*/2)
     bool get_baryon_junctions() const;
 
-    // if False do assume electric charge number at string ends
-    // if True transport electric charge number according to cosh(y*/2)
-    bool get_electric_junctions() const;
-
-    bool get_integer_electric_charge() const;
-
     bool get_only_event_statistics() const;
     bool get_cached_tabels() const;
-    bool get_batch_density_output() const;
-    bool get_batch_2Ddensity_output() const;
-    bool get_batch_eccentricity_output() const;
-    bool get_initialEst_output() const;
+    bool set_remnant_x_ori() const;
+    bool setWSDeformParams_proj() const;
+    bool setWSDeformParams_targ() const;
 
     bool get_fluct_Nstrings_per_NN_collision() const;
     real get_remnant_energy_loss_fraction() const;
@@ -87,11 +72,23 @@ class Parameters : public ParametersMap {
     real get_tau_form_fluct_gamma_beta() const;
 
     real get_BG() const;
-    real getParam(std::string paramName, real defaultValue) const;
 
-    real get_d_min() const;
+    real get_BG_proj() const;
+    real get_BG_targ() const;
+
+    real get_beta2_proj() const;
+    real get_beta2_targ() const;
+    real get_beta3_proj() const;
+    real get_beta3_targ() const;
+    real get_beta4_proj() const;
+    real get_beta4_targ() const;
+    real get_gamma_proj() const;
+    real get_gamma_targ() const;
+    real get_dmin_proj() const;
+    real get_dmin_targ() const;
+    
     bool nucleon_configuration_from_file() const;
-    int getLightNucleusOption() const;
+    int lightNucleusOption() const;
 };
 
 }

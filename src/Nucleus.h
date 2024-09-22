@@ -11,6 +11,8 @@
 #include <string>
 #include <memory>
 
+#include "LHAPDF/LHAPDF.h"
+
 namespace MCGlb {
 
 class Nucleus {
@@ -21,10 +23,16 @@ class Nucleus {
     int Z_;
     bool deformed_;
     bool confFromFile_;
+    real beta2_;
+    real beta3_;
+    real beta4_;
+    real gamma_;
+    bool setWSDeformParams_;
     int lightNucleusOption_;
-    WoodsSaxonParam WS_param_vec;       // rho, w, R, a, beta2, beta3, beta4, gamma
-    real d_min_;                        // minimum distance between nucleons
+    WoodsSaxonParam WS_param_vec;       // rho, w, R, a, beta2, beta4
+    real d_min_;                         // minimum distance between nucleons
     bool sample_valence_quarks;
+    std::unique_ptr<LHAPDF::PDF> pdf;
     real Q2;                            // Q2 when sampling valence quark
     real BG_;
 
@@ -32,24 +40,27 @@ class Nucleus {
     std::vector<std::shared_ptr<Nucleon>> participant_list_;
     std::shared_ptr<RandomUtil::Random> ran_gen_ptr;
 
+    std::vector< std::array<real, 9> > triton_pos_;
     bool nucleon_configuration_loaded_;
     std::vector< std::vector< std::vector<float> > > heavyIon_pos_;
 
     std::vector< std::array<float, 3> > proton_valence_quark_x_;
     std::vector< std::array<float, 3> > neutron_valence_quark_x_;
     std::vector< std::array<float, 2> > dipole_valence_quark_x_;
+    int Pol_;
 
     int system_status_;
     int number_of_valence_quark_samples_;
-    int N_sea_partons_;
 
  public:
     Nucleus() = default;
     Nucleus(std::string nucleus_name,
             std::shared_ptr<RandomUtil::Random> ran_gen,
             bool sample_valence_quarks=false, real BG=4.,
-            real d_min=0.9, bool deformed=true,
-            bool confFromFile=false, int N_sea_partons=1);
+            real d_min=0.9, real beta2 = 0.0, real beta3=0.0, 
+            real beta4=0.0, real gamma=0.0, int Pol = 0, bool setWSDeformParams=false,
+            bool deformed=true, bool confFromFile=false,
+            int lightNucleusOption = 1);
     ~Nucleus();
 
     std::string get_name() const {return(name);}
@@ -57,25 +68,20 @@ class Nucleus {
 
     int readin_valence_quark_samples();
 
-    void setLightNucleusOption(int option) { lightNucleusOption_ = option;}
-
     void set_valence_quark_Q2(real Q2_q) {Q2 = Q2_q;}
     //! This function set Woods-Saxon parameters based on the nucleus name
     void set_nucleus_parameters(std::string nucleus_name);
     void set_woods_saxon_parameters(int A_in, int Z_in,
                                     real rho, real w, real R, real a,
                                     real beta2, real beta3, real beta4,
-                                    real gamma, real da, real dR,
-                                    int density_function_type_in);
-    void setWoodsSaxonParameters(real rho, real w, real R, real a,
-                                 real beta2, real beta3, real beta4,
-                                 real gamma, real da, real dR);
+                                    real gamma, int density_function_type_in);
     void set_dmin (real d_min) {d_min_ = d_min;}
     real get_nucleon_minimum_distance() const {return(d_min_);}
     int get_nucleus_A() const {return(A_);}
     int get_nucleus_Z() const {return(Z_);}
     WoodsSaxonParam get_woods_saxon_parameters() const {return(WS_param_vec);}
     bool is_deformed() const {return(deformed_);}
+    real spherical_harmonics_Y22(int l, real ct, real phi) const;
 
     void add_a_participant(std::shared_ptr<Nucleon> ipart) {
         if (!ipart->is_wounded()) {
@@ -88,32 +94,44 @@ class Nucleus {
     //! for the nucleus
     void generate_nucleus_3d_configuration();
     //! This function samples the nucleon spatial configuration for deuteron
+    real linear_interpolate(const std::vector<real>& x, const std::vector<real>& y, real x_interp);
+    void generate_Pol_deuteron_configuration();
     void generate_deuteron_configuration();
+    real readinrVr_for_pol_d(std::vector<real>& rVr_pro_, std::vector<real>& rVr_r_);
+    std::pair<real, real> Psi_pm1_0(real rmag, real theta, const std::vector<real>& rVr_r_, 
+                                      const std::vector<real>& rVr_pro_);
+    void generate_2D_dis_plo_pm1(real total_Vr_, std::vector<PointProbability>& distribution_pol_pm1,
+                               std::vector<PointProbability>& distribution_pol_0,
+                               const std::vector<real>& rVr_r_, const std::vector<real>& rVr_pro_);
+    std::vector<PointProbability> generate2DCDF(const std::vector<PointProbability>& distribution);
+    std::pair<real, real> sampleFrom2DCDF(const std::vector<PointProbability>& cdf);
+  
     //! The inverse CDF of the Hulthen function for deutron wavefunction
     real get_inverse_CDF_hulthen_function(real y) const;
     //! The Hulthen function for deutron wavefunction
     real hulthen_function_CDF(real r) const;
 
     //! Read in spatial configuration for triton
+    void readin_triton_position();
     void readin_nucleon_positions();
 
     //! This function samples the spatial configuration for triton
+    void generate_triton_configuration();
     int sample_nucleon_configuration();
 
     //! This function samples a nucleon spatial configuration according to
     //! the Fermi Distribution
     void generate_nucleus_configuration_with_woods_saxon();
     void generate_nucleus_configuration_with_deformed_woods_saxon();
-    void sample_r_from_woods_saxon(
-        std::vector<std::pair<real, real>> &r_array) const;
-    real sample_r_from_deformed_woods_saxon() const;
+    real sample_r_from_woods_saxon() const;
     void sample_r_and_costheta_from_deformed_woods_saxon(
-        std::vector<std::array<real, 4>> &nucleonPos_array) const;
+                                    real &phi, real &r, real &costheta) const;
+    void setWoodsSaxonParameters(real rho, real w, real R, real a,
+                                 real beta2, real beta3, real beta4,
+                                 real gamma);
     //! Fermi Distribution 
     real fermi_distribution(real r, real R_WS, real a_WS) const;
-    real getAvgWoodsSaxonDensity(real r) const;
     real spherical_harmonics(int l, real ct) const;
-    real spherical_harmonics_Y22(int l, real ct, real phi) const;
 
     int get_number_of_nucleons() const {return(nucleon_list_.size());}
     std::shared_ptr<Nucleon> get_nucleon(unsigned int idx) {
@@ -132,7 +150,7 @@ class Nucleus {
     void shift_nucleus(SpatialVec x_shift);
     void recenter_nucleus();
     void rotate_nucleus(real phi, real theta);
-    void rotate_nucleus_3D(real phi, real theta, real gamma);
+    void rotate_nucleus_3D(real alpha, real beta, real gamma);
 
     void accelerate_nucleus(real ecm, int direction);
     void accelerate_dipole(real ecm, int direction);
@@ -148,18 +166,18 @@ class Nucleus {
     void sample_valence_quarks_inside_dipole(real ecm, int direction);
     void add_soft_parton_ball(real ecm, int direction);
 
-    void sample_fermi_momentum();
-
+    real sample_a_u_quark_momentum_fraction(const bool flag_NPDF) const;
+    real sample_a_d_quark_momentum_fraction(const bool flag_NPDF) const;
     void sample_quark_momentum_fraction(std::vector<real> &xQuark,
-                                        std::vector<real> &eQuark,
                                         const int number_of_quarks,
-                                        const real electric_charge,
+                                        const int electric_charge,
                                         const real ecm) const;
     void sample_quark_momentum_fraction_in_dipole(
-                                        std::vector<real> &xQuark, 
-                                        const int number_of_quarks,
-                                        const real ecm) const;
+            std::vector<real> &xQuark, const int number_of_quarks,
+            const real ecm) const;
+
     SpatialVec sample_valence_quark_position() const;
+    SpatialVec sample_valence_polarized_quark_position(const real bxq, const int id ) const;
     real ExponentialDistribution(const real a, const real r) const;
 };
 

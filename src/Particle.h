@@ -5,7 +5,6 @@
 
 #include "data_structs.h"
 #include <cassert>
-#include <iostream>
 #include <cmath>
 
 namespace MCGlb {
@@ -50,8 +49,9 @@ class Particle {
 
     void set_p(MomentumVec p_in) {
         assert(p_in[0] >= 0.);
+        assert((  p_in[0]*p_in[0] - p_in[1]*p_in[1]
+                - p_in[2]*p_in[2] - p_in[3]*p_in[3]) >= 0.);
         p = p_in;
-        set_mass_with_momentum_vector();
     }
     MomentumVec get_p() const {return(p);}
 

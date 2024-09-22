@@ -3627,67 +3627,67 @@ String toString(double long in) { return detail::fpToString(in, 15); }
 
 String toString(char in) {
     char buf[64];
-    std::snprintf(buf, 64, "%d", in);
+    std::sprintf(buf, "%d", in);
     return buf;
 }
 
 String toString(char signed in) {
     char buf[64];
-    std::snprintf(buf, 64, "%d", in);
+    std::sprintf(buf, "%d", in);
     return buf;
 }
 
 String toString(char unsigned in) {
     char buf[64];
-    std::snprintf(buf, 64, "%ud", in);
+    std::sprintf(buf, "%ud", in);
     return buf;
 }
 
 String toString(int short in) {
     char buf[64];
-    std::snprintf(buf, 64, "%d", in);
+    std::sprintf(buf, "%d", in);
     return buf;
 }
 
 String toString(int short unsigned in) {
     char buf[64];
-    std::snprintf(buf, 64, "%u", in);
+    std::sprintf(buf, "%u", in);
     return buf;
 }
 
 String toString(int in) {
     char buf[64];
-    std::snprintf(buf, 64, "%d", in);
+    std::sprintf(buf, "%d", in);
     return buf;
 }
 
 String toString(int unsigned in) {
     char buf[64];
-    std::snprintf(buf, 64, "%u", in);
+    std::sprintf(buf, "%u", in);
     return buf;
 }
 
 String toString(int long in) {
     char buf[64];
-    std::snprintf(buf, 64, "%ld", in);
+    std::sprintf(buf, "%ld", in);
     return buf;
 }
 
 String toString(int long unsigned in) {
     char buf[64];
-    std::snprintf(buf, 64, "%lu", in);
+    std::sprintf(buf, "%lu", in);
     return buf;
 }
 
 #ifdef DOCTEST_CONFIG_WITH_LONG_LONG
 String toString(int long long in) {
     char buf[64];
-    std::snprintf(buf, 64, "%lld", in);
+    std::sprintf(buf, "%lld", in);
     return buf;
 }
 String toString(int long long unsigned in) {
     char buf[64];
-    std::snprintf(buf, 64, "%llu", in);
+    std::sprintf(buf, "%llu", in);
     return buf;
 }
 #endif // DOCTEST_CONFIG_WITH_LONG_LONG
@@ -4479,7 +4479,7 @@ namespace detail
         static bool             isSet;
         static struct sigaction oldSigActions[sizeof(signalDefs) / sizeof(SignalDefs)];
         static stack_t          oldSigStack;
-        static char             altStackMem[32768];
+        static char             altStackMem[SIGSTKSZ];
 
         static void handleSignal(int sig) {
             std::string name = "<unknown signal>";
@@ -4499,7 +4499,7 @@ namespace detail
             isSet = true;
             stack_t sigStack;
             sigStack.ss_sp    = altStackMem;
-            sigStack.ss_size  = 32768;
+            sigStack.ss_size  = SIGSTKSZ;
             sigStack.ss_flags = 0;
             sigaltstack(&sigStack, &oldSigStack);
             struct sigaction sa = {0};
@@ -4529,7 +4529,7 @@ namespace detail
     struct sigaction FatalConditionHandler::oldSigActions[sizeof(signalDefs) / sizeof(SignalDefs)] =
             {};
     stack_t FatalConditionHandler::oldSigStack           = {};
-    char    FatalConditionHandler::altStackMem[32768]    = {};
+    char    FatalConditionHandler::altStackMem[SIGSTKSZ] = {};
 
 #endif // DOCTEST_PLATFORM_WINDOWS
 #endif // DOCTEST_CONFIG_POSIX_SIGNALS || DOCTEST_CONFIG_WINDOWS_SEH

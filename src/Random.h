@@ -10,9 +10,9 @@ namespace RandomUtil {
 
 class Random {
  private:
-    unsigned int seed_;
+    int seed_;
     double Gamma_beta_;
-    std::shared_ptr<std::mt19937> ran_generator_;
+    std::unique_ptr<std::mt19937> ran_generator_;
     std::uniform_real_distribution<double> rand_uniform_dist_;
     std::uniform_int_distribution<int> rand_int_uniform_dist_;
     std::normal_distribution<double> rand_normal_dist_;
@@ -32,11 +32,8 @@ class Random {
     }
 
     int rand_int_uniform() {return(rand_int_uniform_dist_(*ran_generator_));}
-    unsigned int get_seed() const {return(seed_);}
+    int get_seed() const {return(seed_);}
     double get_Gamma_beta() const {return(Gamma_beta_);}
-    std::shared_ptr<std::mt19937> getRanGenerator() {
-        return(ran_generator_);
-    }
 };
 
 }

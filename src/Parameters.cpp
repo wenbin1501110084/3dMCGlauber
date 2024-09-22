@@ -5,12 +5,6 @@
 
 namespace MCGlb {
 
-
-real Parameters::getParam(std::string paramName, real defaultValue) const {
-    return(static_cast<real>(get_param_double(paramName, defaultValue)));
-}
-
-
 void Parameters::set_b_max(real b_in) {
     assert(b_in >= 0.);
     set_parameter("b_max", b_in);
@@ -18,7 +12,7 @@ void Parameters::set_b_max(real b_in) {
 
 
 real Parameters::get_b_max() const {
-    real b = static_cast<real>(get_param_double("b_max", 25.));
+    real b = static_cast<real>(get_param_double("b_max"));
     assert(b >= 0.);
     return(b);
 }
@@ -31,72 +25,62 @@ void Parameters::set_b_min(real b_in) {
 
 
 real Parameters::get_b_min() const {
-    real b = static_cast<real>(get_param_double("b_min", 0.));
+    real b = static_cast<real>(get_param_double("b_min"));
     assert(b >= 0.);
     return(b);
 }
 
-
-real Parameters::get_d_min() const {
-    real b = static_cast<real>(get_param_double("d_min", 0.));
-    assert(b >= 0.);
-    return(b);
-}
-
-real Parameters::get_BG_proj() const {
-    real BG = static_cast<real>(get_param_double("BG_proj", 5.));
-    assert(BG > 0.);
-    return(BG);
-}
-
-real Parameters::get_BG_targ() const {
-    real BG = static_cast<real>(get_param_double("BG_targ", 5.));
-    assert(BG > 0.);
-    return(BG);
-}
 
 int Parameters::get_use_quarks() const {
-    int flag = get_param_int("useQuarks", 1);
+    int flag = get_param_int("useQuarks");
     assert(flag >= 0 && flag < 3);
     return(flag);
 }
 
 
 real Parameters::get_quarks_Q2() const {
-    real Q2 = static_cast<real>(get_param_double("Q2", 1.));
+    real Q2 = static_cast<real>(get_param_double("Q2"));
     assert(Q2 >= 0.);
     return(Q2);
 }
 
 
 real Parameters::get_roots() const {
-    real roots = static_cast<real>(get_param_double("roots", 200.));
+    real roots = static_cast<real>(get_param_double("roots"));
     assert(roots > 0.);
     return(roots);
 }
 
 real Parameters::get_UPC_root_low_cut() const {
-    real roots = static_cast<real>(get_param_double("roots_low_cut", 1.));
+    real roots = static_cast<real>(get_param_double("roots_low_cut"));
     assert(roots > 0.);
     return(roots);
 }
 
 real Parameters::get_UPC_root_up_cut() const {
-    real roots = static_cast<real>(get_param_double("roots_up_cut", 20.));
+    real roots = static_cast<real>(get_param_double("roots_up_cut"));
     assert(roots > 0.);
     return(roots);
 }
 
-bool Parameters::use_roots_cut() const {
-    int flag = get_param_int("use_roots_cut", 0);
+bool Parameters::use_roots_distribution() const {
+    int flag = get_param_int("use_roots_distribution");
     if (flag == 1)
         return(true);
     else
         return(false);
 }
 
-bool Parameters::use_roots_distribution() const {
-    int flag = get_param_int("use_roots_distribution", 0);
+bool Parameters::set_remnant_x_ori() const {
+    int flag = get_param_int("remnant_x_is_ori");
+    if (flag == 1)
+        return(true);
+    else
+        return(false);
+}
+
+bool Parameters::use_roots_cut() const {
+    int flag = get_param_int("use_roots_cut");
     if (flag == 1)
         return(true);
     else
@@ -104,62 +88,27 @@ bool Parameters::use_roots_distribution() const {
 }
 
 bool Parameters::use_E_dependent_LB() const {
-    int flag = get_param_int("use_E_dependent_LB", 0);
+    int flag = get_param_int("use_E_dependent_LB");
     if (flag == 1)
         return(true);
     else
         return(false);
 }
 
-real Parameters::get_CB() const {
-    real CB = static_cast<real>(get_param_double("CB", 1.));
-    assert(CB >= 0.);
-    return(CB);
-}
-
-
 real Parameters::get_lambdaB() const {
-    real lambdaB = static_cast<real>(get_param_double("lambdaB", 0.));
+    real lambdaB = static_cast<real>(get_param_double("lambdaB"));
     assert(lambdaB >= 0.);
     return(lambdaB);
 }
 
-
-real Parameters::get_lambdaBs() const {
-    real lambdaBs = static_cast<real>(get_param_double("lambdaBs", 1.));
-    assert(lambdaBs >= 0.);
-    return(lambdaBs);
+real Parameters::get_CB() const {
+    real CB = static_cast<real>(get_param_double("CB"));
+    assert(CB >= 0.);
+    return(CB);
 }
-real Parameters::get_lambdaQ() const {
-    real lambdaQ = static_cast<real>(get_param_double("lambdaQ", 0.));
-    assert(lambdaQ >= 0.);
-    return(lambdaQ);
-}
-
-
-real Parameters::get_lambdaQs() const {
-    real lambdaQs = static_cast<real>(get_param_double("lambdaQs", 1.));
-    assert(lambdaQs >= 0.);
-    return(lambdaQs);
-}
-
-
-real Parameters::get_baryon_in_string_prob() const {
-    real prob = static_cast<real>(get_param_double("baryonInStringProb", 1.));
-    assert(prob >= 0. && prob <= 1.);
-    return(prob);
-}
-
-real Parameters::get_electric_charge_in_string_prob() const {
-    real prob = static_cast<real>(
-                        get_param_double("electricChargeInStringProb", 1.));
-    assert(prob >= 0. && prob <= 1.);
-    return(prob);
-}
-
 
 bool Parameters::get_cached_tabels() const {
-    int flag = get_param_int("cache_tables", 1);
+    int flag = get_param_int("cache_tables");
     if (flag == 1)
         return(true);
     else
@@ -168,7 +117,7 @@ bool Parameters::get_cached_tabels() const {
 
 
 bool Parameters::get_fluct_Nstrings_per_NN_collision() const {
-    int flag = get_param_int("fluct_Nstrings_per_NN_collision", 1);
+    int flag = get_param_int("fluct_Nstrings_per_NN_collision");
     if (flag == 1)
         return(true);
     else
@@ -178,80 +127,35 @@ bool Parameters::get_fluct_Nstrings_per_NN_collision() const {
 
 double Parameters::get_remnant_energy_loss_fraction() const {
     real frac = static_cast<real>(
-            get_param_double("remnant_energy_loss_fraction", 0.5));
+            get_param_double("remnant_energy_loss_fraction"));
     assert(frac >= 0. && frac <= 1.);
     return(frac);
 }
 
 
 int Parameters::get_QCD_string_production_mode() const {
-    int flag = get_param_int("QCD_string_production_mode", 1);
+    int flag = get_param_int("QCD_string_production_mode");
     assert(flag >= 0 && flag < 5);
     return(flag);
 }
 
 
 int Parameters::get_QCD_string_evolution_mode() const {
-    int flag = get_param_int("evolve_QCD_string_mode", 4);
+    int flag = get_param_int("evolve_QCD_string_mode");
     assert(flag > 0 && flag < 5);
     return(flag);
 }
 
 
 int Parameters::get_rapidity_loss_method() const {
-    int flag = get_param_int("rapidity_loss_method", 3);
-    assert(flag > 0 && flag < 5);
-    return(flag);
-}
-int Parameters::get_N_sea_partons() const {
-    int flag = get_param_int("N_sea_partons", 1);
-    assert(flag > 0);
+    int flag = get_param_int("rapidity_loss_method");
+    assert(flag > 0 && flag < 4);
     return(flag);
 }
 
 
 bool Parameters::get_only_event_statistics() const {
-    int flag = get_param_int("only_event_statistics", 0);
-    if (flag == 0) {
-        return(false);
-    } else {
-        return(true);
-    }
-}
-
-
-bool Parameters::get_batch_density_output() const {
-    int flag = get_param_int("batch_density_output", 0);
-    if (flag == 0) {
-        return(false);
-    } else {
-        return(true);
-    }
-}
-
-
-bool Parameters::get_initialEst_output() const {
-    int flag = get_param_int("outputInitialEst", 0);
-    if (flag == 0) {
-        return(false);
-    } else {
-        return(true);
-    }
-}
-
-
-bool Parameters::get_batch_2Ddensity_output() const {
-    int flag = get_param_int("batch_2Ddensity_output", 0);
-    if (flag == 0) {
-        return(false);
-    } else {
-        return(true);
-    }
-}
-
-
-bool Parameters::get_batch_eccentricity_output() const {
-    int flag = get_param_int("batch_eccentricity_output", 0);
+    int flag = get_param_int("only_event_statistics");
     if (flag == 0) {
         return(false);
     } else {
@@ -261,27 +165,7 @@ bool Parameters::get_batch_eccentricity_output() const {
 
 
 bool Parameters::get_baryon_junctions() const {
-    int flag = get_param_int("baryon_junctions", 0);
-    if (flag == 0) {
-        return(false);
-    } else {
-        return(true);
-    }
-}
-
-
-bool Parameters::get_electric_junctions() const {
-    int flag = get_param_int("electric_junctions", 0);
-    if (flag == 0) {
-        return(false);
-    } else {
-        return(true);
-    }
-}
-
-
-bool Parameters::get_integer_electric_charge() const {
-    int flag = get_param_int("integer_electric_charge", 0);
+    int flag = get_param_int("baryon_junctions");
     if (flag == 0) {
         return(false);
     } else {
@@ -291,8 +175,7 @@ bool Parameters::get_integer_electric_charge() const {
 
 
 real Parameters::get_shadowing_factor() const {
-    real shadowing = static_cast<real>(
-                    get_param_double("shadowing_factor", 1.0));
+    real shadowing = static_cast<real>(get_param_double("shadowing_factor"));
     assert(shadowing >= 0.);
     assert(shadowing <= 1.);
     return(shadowing);
@@ -300,8 +183,7 @@ real Parameters::get_shadowing_factor() const {
 
 
 real Parameters::get_yloss_param_slope() const {
-    real slope = static_cast<real>(
-                    get_param_double("yloss_param_slope", 1.32));
+    real slope = static_cast<real>(get_param_double("yloss_param_slope"));
     assert(slope >= 0.);
     //assert(slope <= 1.);
     return(slope);
@@ -309,16 +191,14 @@ real Parameters::get_yloss_param_slope() const {
 
 
 real Parameters::get_yloss_param_alpha1() const {
-    real a = static_cast<real>(
-                    get_param_double("yloss_param_alpha1", 1.8));
+    real a = static_cast<real>(get_param_double("yloss_param_alpha1"));
     assert(a >= 1.);
     return(a);
 }
 
 
 real Parameters::get_yloss_param_alpha2() const {
-    real a = static_cast<real>(
-                    get_param_double("yloss_param_alpha2", 0.35));
+    real a = static_cast<real>(get_param_double("yloss_param_alpha2"));
     assert(a >= 0.);
     assert(a <= 1.);
     return(a);
@@ -326,24 +206,21 @@ real Parameters::get_yloss_param_alpha2() const {
 
 
 real Parameters::get_yloss_param_fluct_var_LHC() const {
-    real a = static_cast<real>(
-                    get_param_double("yloss_param_fluct_var_LHC", 0.6));
+    real a = static_cast<real>(get_param_double("yloss_param_fluct_var_LHC"));
     assert(a >= 0.);
     return(a);
 }
 
 
 real Parameters::get_yloss_param_fluct_var_RHIC() const {
-    real a = static_cast<real>(
-                    get_param_double("yloss_param_fluct_var_RHIC", 0.6));
+    real a = static_cast<real>(get_param_double("yloss_param_fluct_var_RHIC"));
     assert(a >= 0.);
     return(a);
 }
 
 
 real Parameters::get_tau_form_mean() const {
-    real tau_form_mean = static_cast<real>(
-                    get_param_double("tau_form_mean", 0.5));
+    real tau_form_mean = static_cast<real>(get_param_double("tau_form_mean"));
     assert(tau_form_mean > 0.);
     return(tau_form_mean);
 }
@@ -351,13 +228,13 @@ real Parameters::get_tau_form_mean() const {
 
 real Parameters::get_tau_form_fluct_gamma_beta() const {
     real tau_form_beta = static_cast<real>(
-            get_param_double("tau_form_fluct_gamma_beta", 1.0));
+            get_param_double("tau_form_fluct_gamma_beta"));
     return(tau_form_beta);
 }
 
 
 bool Parameters::nucleon_configuration_from_file() const {
-    int flag = get_param_int("nucleon_configuration_from_file", 0);
+    int flag = get_param_int("nucleon_configuration_from_file");
     if (flag == 0) {
         return(false);
     } else {
@@ -365,16 +242,106 @@ bool Parameters::nucleon_configuration_from_file() const {
     }
 }
 
-
-int Parameters::getLightNucleusOption() const {
-    return(get_param_int("light_nucleus_option", 0));
+bool Parameters::setWSDeformParams_proj() const {
+    int flag = get_param_int("setWSDeformParams_proj");
+    if (flag == 0) {
+        return(false);
+    } else {
+        return(true);
+    }
 }
 
+bool Parameters::setWSDeformParams_targ() const {
+    int flag = get_param_int("setWSDeformParams_targ");
+    if (flag == 0) {
+        return(false);
+    } else {
+        return(true);
+    }
+}
+
+int Parameters::lightNucleusOption() const {
+    return get_param_int("lightNucleusOption");
+}
 
 real Parameters::get_BG() const {
-    real BG = static_cast<real>(get_param_double("BG", 5.));
+    real BG = static_cast<real>(get_param_double("BG"));
     assert(BG > 0.);
     return(BG);
 }
+
+real Parameters::get_BG_proj() const {
+    real BG = static_cast<real>(get_param_double("BG_proj"));
+    assert(BG > 0.);
+    return(BG);
+}
+
+real Parameters::get_BG_targ() const {
+    real BG = static_cast<real>(get_param_double("BG_targ"));
+    assert(BG > 0.);
+    return(BG);
+}
+
+real Parameters::get_beta2_proj() const {
+    real BG = static_cast<real>(get_param_double("beta2_proj"));
+    return(BG);
+}
+
+real Parameters::get_beta2_targ() const {
+    real BG = static_cast<real>(get_param_double("beta2_targ"));
+    return(BG);
+}
+
+real Parameters::get_beta3_proj() const {
+    real BG = static_cast<real>(get_param_double("beta3_proj"));
+    return(BG);
+}
+
+real Parameters::get_beta3_targ() const {
+    real BG = static_cast<real>(get_param_double("beta3_targ"));
+    return(BG);
+}
+
+real Parameters::get_beta4_proj() const {
+    real BG = static_cast<real>(get_param_double("beta4_proj"));
+    return(BG);
+}
+
+real Parameters::get_beta4_targ() const {
+    real BG = static_cast<real>(get_param_double("beta4_targ"));
+    return(BG);
+}
+
+real Parameters::get_gamma_proj() const {
+    real BG = static_cast<real>(get_param_double("gamma_proj"));
+    return(BG);
+}
+
+int Parameters::get_Pol_proj() const {
+    int BG = static_cast<real>(get_param_double("Pol_proj"));
+    return(BG);
+}
+
+int Parameters::get_Pol_targ() const {
+    int BG = static_cast<real>(get_param_double("Pol_targ"));
+    return(BG);
+}
+
+real Parameters::get_gamma_targ() const {
+    real BG = static_cast<real>(get_param_double("gamma_targ"));
+    return(BG);
+}
+
+real Parameters::get_dmin_proj() const {
+    real BG = static_cast<real>(get_param_double("dmin_proj"));
+    return(BG);
+}
+
+real Parameters::get_dmin_targ() const {
+    real BG = static_cast<real>(get_param_double("dmin_targ"));
+    return(BG);
+}
+
+
 
 }

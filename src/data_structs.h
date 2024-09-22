@@ -11,7 +11,12 @@ namespace MCGlb {
 typedef double real;
 typedef std::array<real, 4> SpatialVec;
 typedef std::array<real, 4> MomentumVec;
-typedef std::array<real, 10> WoodsSaxonParam;
+typedef std::array<real, 8> WoodsSaxonParam;
+
+typedef struct PointProbability {
+    double rmag, theta;
+    double prob;
+};
 
 }
 

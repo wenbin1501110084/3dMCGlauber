@@ -4,14 +4,11 @@
 #include <string>
 #include <iostream>
 
-
 void print_help() {
-    std::cout << "Usage: ./3dMCGlb.e nev [input_file] [seed] [param=value]"
-              << std::endl;
+    std::cout << "Usage: ./3dMCGlb.e nev [input_file] [seed]" << std::endl;
     std::cout << "Default input_file: input" << std::endl;
     std::cout << "Default seed: -1 (use device random seed)" << std::endl;
 }
-
 
 int main(int argc, char* argv[]) {
     std::string input_filename = "input";
@@ -32,8 +29,7 @@ int main(int argc, char* argv[]) {
         seed = std::stoll(*(argv + 3));
     }
 
-    MCGlb::EventGenerator mc_gen(input_filename, argc, argv, seed);
-    //mc_gen.generateMinBiasEventList();
+    MCGlb::EventGenerator mc_gen(input_filename, seed);
     mc_gen.generate_events(nev);
     return(0);
 }
