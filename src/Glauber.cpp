@@ -149,7 +149,8 @@ Glauber::Glauber(
                           << collision_energy_ << "  " << ybeam - ybeam_AA
                           << std::endl;
     output_rapidity_shift.close();
-    real siginNN = compute_NN_inelastic_cross_section(collision_energy_);
+    real siginNN_scale = parameter_list.getParam("siginNN_scale", 1.0);
+    real siginNN = siginNN_scale * compute_NN_inelastic_cross_section(collision_energy_);
     sigma_eff_ = get_sig_eff(siginNN);
     std::cout << "sqrt{s} = " << collision_energy_ << " GeV, "
               << "siginNN = " << siginNN << " mb" << std::endl;
