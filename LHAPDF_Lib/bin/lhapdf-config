@@ -5,7 +5,7 @@
 ## These variables need to exist
 ## Note no use of $DESTDIR... we ignore it so that destdir can be used
 ## for temp installs later copied to /
-prefix=/home/wenbin/Downloads/Wenbin_working/Work/WSU_BNL_work/UPC/code/my_branch/iEBE-MUSIC/codes/wenbin_main/3dMCGlauber/LHAPDF_Lib
+prefix=/home/wenbin/Downloads/Wenbin_working/Work/WSU_BNL_work/polarized_d_A/papers/Code/3dMCGlauber/LHAPDF_Lib
 exec_prefix=${prefix}
 datarootdir=${prefix}/share
 
@@ -32,7 +32,7 @@ fi
 OUT=""
 
 tmp=$( echo "$*" | egrep -- '--\<prefix\>')
-test -n "$tmp" && OUT="$OUT /home/wenbin/Downloads/Wenbin_working/Work/WSU_BNL_work/UPC/code/my_branch/iEBE-MUSIC/codes/wenbin_main/3dMCGlauber/LHAPDF_Lib"
+test -n "$tmp" && OUT="$OUT /home/wenbin/Downloads/Wenbin_working/Work/WSU_BNL_work/polarized_d_A/papers/Code/3dMCGlauber/LHAPDF_Lib"
 
 tmp=$( echo "$*" | egrep -- '--\<incdir\>')
 test -n "$tmp" && OUT="$OUT ${prefix}/include"

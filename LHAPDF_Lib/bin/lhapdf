@@ -15,7 +15,7 @@ except ImportError:
     __version__ = '6.2.1'
     configured_datadir = '${datarootdir}/LHAPDF'\
                          .replace('${datarootdir}', '${prefix}/share')\
-                         .replace('${prefix}', '/home/wenbin/Downloads/Wenbin_working/Work/WSU_BNL_work/UPC/code/my_branch/iEBE-MUSIC/codes/wenbin_main/3dMCGlauber/LHAPDF_Lib')
+                         .replace('${prefix}', '/home/wenbin/Downloads/Wenbin_working/Work/WSU_BNL_work/polarized_d_A/papers/Code/3dMCGlauber/LHAPDF_Lib')
 major_version = '.'.join(__version__.split('.')[:2])
 #print major_version, configured_datadir
 

@@ -39,6 +39,7 @@ Nucleus::Nucleus(
     }
     nucleon_configuration_loaded_ = false;
     lightNucleusOption_ = 0;
+    Pol_ = 0;
 }
 
 Nucleus::~Nucleus() {
@@ -97,6 +98,12 @@ void Nucleus::set_nucleus_parameters(std::string nucleus_name) {
     } else if (nucleus_name.compare("He4") == 0) {
         set_woods_saxon_parameters(
             4, 2, 0.17, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1);
+    } else if (nucleus_name.compare("Be7") == 0) {
+        set_woods_saxon_parameters(
+            7, 4, 0.17, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1);
+    } else if (nucleus_name.compare("Be9") == 0) {
+        set_woods_saxon_parameters(
+            9, 4, 0.17, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1);
     } else if (nucleus_name.compare("C") == 0) {
         set_woods_saxon_parameters(
             12, 6, 0.17, 1.403, 2.44, 1.635, 0.0, 0.0, 0.0, 0.0, 1);
@@ -204,11 +211,12 @@ void Nucleus::generate_nucleus_3d_configuration() {
     recenter_nucleus();
 
     sample_fermi_momentum();
-
-    real phi = 2. * M_PI * ran_gen_ptr->rand_uniform();
-    real theta = acos(1. - 2. * ran_gen_ptr->rand_uniform());
-    real gamma = 2 * M_PI * ran_gen_ptr->rand_uniform();
-    rotate_nucleus_3D(phi, theta, gamma);
+    if (Pol_ == 0) {
+        real phi = 2. * M_PI * ran_gen_ptr->rand_uniform();
+        real theta = acos(1. - 2. * ran_gen_ptr->rand_uniform());
+        real gamma = 2 * M_PI * ran_gen_ptr->rand_uniform();
+        rotate_nucleus_3D(phi, theta, gamma);
+    }
 }
 
 void Nucleus::recenter_nucleus() {
@@ -555,6 +563,26 @@ void Nucleus::readin_nucleon_positions() {
             filename << "tables/C12_alphaCluster.bin.in";
         } else {
             std::cout << "C12 nucleus does not support lightNucleusOption = "
+                      << lightNucleusOption_ << std::endl;
+            exit(1);
+        }
+    } else if (A_ == 7) {  // beryllium-7
+        if (lightNucleusOption_ == 1) { // m = 1/2
+            filename << "tables/nucleon_positions_Be7_m_0p5.bin";
+        } else if (lightNucleusOption_ == 2) { // m = 3/2
+            filename << "tables/nucleon_positions_Be7_m_1p5.bin";
+        } else {
+            std::cout << "Be-7 nucleus does not support lightNucleusOption = "
+                      << lightNucleusOption_ << std::endl;
+            exit(1);
+        }
+    } else if (A_ == 9) {  // beryllium-9
+        if (lightNucleusOption_ == 1) { // m = 1/2
+            filename << "tables/nucleon_positions_Be9_m_0p5.bin";
+        } else if (lightNucleusOption_ == 2) { // m = 3/2
+            filename << "tables/nucleon_positions_Be9_m_1p5.bin";
+        } else {
+            std::cout << "Be-9 nucleus does not support lightNucleusOption = "
                       << lightNucleusOption_ << std::endl;
             exit(1);
         }

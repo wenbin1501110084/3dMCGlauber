@@ -22,6 +22,7 @@ class Nucleus {
     bool deformed_;
     bool confFromFile_;
     int lightNucleusOption_;
+    int Pol_;
     WoodsSaxonParam WS_param_vec;  // rho, w, R, a, beta2, beta3, beta4, gamma
     real d_min_;                   // minimum distance between nucleons
     bool sample_valence_quarks;
@@ -57,6 +58,7 @@ class Nucleus {
     int readin_valence_quark_samples();
 
     void setLightNucleusOption(int option) { lightNucleusOption_ = option; }
+    void setPolarization(int option) { Pol_ = option; }
 
     void set_valence_quark_Q2(real Q2_q) { Q2 = Q2_q; }
     //! This function set Woods-Saxon parameters based on the nucleus name

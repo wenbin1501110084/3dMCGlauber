@@ -266,8 +266,32 @@ bool Parameters::nucleon_configuration_from_file() const {
     }
 }
 
+bool Parameters::nucleon_configuration_from_file_Proj() const {
+    int flag = get_param_int("nucleon_configuration_from_file_Proj", 0);
+    if (flag == 0) {
+        return (false);
+    } else {
+        return (true);
+    }
+}
+
+bool Parameters::nucleon_configuration_from_file_Targ() const {
+    int flag = get_param_int("nucleon_configuration_from_file_Targ", 0);
+    if (flag == 0) {
+        return (false);
+    } else {
+        return (true);
+    }
+}
+
+
+
 int Parameters::getLightNucleusOption() const {
     return (get_param_int("light_nucleus_option", 0));
+}
+
+int Parameters::getPolarization() const {
+    return (get_param_int("Polarization", 0));
 }
 
 real Parameters::get_BG() const {

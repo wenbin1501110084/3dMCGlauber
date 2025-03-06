@@ -45,11 +45,13 @@ Glauber::Glauber(
     int N_sea_partons = parameter_list.get_N_sea_partons();
 
     bool deformed = true;
-    bool nucleonConfFromFile = parameter_list.nucleon_configuration_from_file();
+    //bool nucleonConfFromFile = parameter_list.nucleon_configuration_from_file();
+    bool nucleonConfFromFile_Proj = parameter_list.nucleon_configuration_from_file_Proj();
+    bool nucleonConfFromFile_Targ = parameter_list.nucleon_configuration_from_file_Targ();
     projectile = std::unique_ptr<Nucleus>(new Nucleus(
         parameter_list.get_projectle_nucleus_name(), ran_gen,
         sample_valence_quark, parameter_list.get_BG(), d_min, deformed,
-        nucleonConfFromFile, N_sea_partons));
+        nucleonConfFromFile_Proj, N_sea_partons));
     int resetProjWS =
         static_cast<int>(parameter_list.getParam("resetProjWS", 0.0));
     if (resetProjWS != 0) {
@@ -72,7 +74,7 @@ Glauber::Glauber(
 
     target = std::unique_ptr<Nucleus>(new Nucleus(
         parameter_list.get_target_nucleus_name(), ran_gen, sample_valence_quark,
-        parameter_list.get_BG(), d_min, deformed, nucleonConfFromFile,
+        parameter_list.get_BG(), d_min, deformed, nucleonConfFromFile_Targ,
         N_sea_partons));
     int resetTargWS =
         static_cast<int>(parameter_list.getParam("resetTargWS", 0.0));
@@ -112,9 +114,13 @@ Glauber::Glauber(
         target->setWoodsSaxonParameters(
             WS_rho, WS_w, WS_R, WS_a, WS_beta2, WS_beta3, WS_beta4, WS_gamma);
     }
-    if (nucleonConfFromFile) {
-        projectile->setLightNucleusOption(
-            parameter_list.getLightNucleusOption());
+    projectile->setPolarization(parameter_list.getPolarization());
+    target->setPolarization(parameter_list.getPolarization());
+            
+    if (nucleonConfFromFile_Proj) {
+        projectile->setLightNucleusOption(parameter_list.getLightNucleusOption());
+    }
+    if (nucleonConfFromFile_Targ) {
         target->setLightNucleusOption(parameter_list.getLightNucleusOption());
     }
 
