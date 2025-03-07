@@ -10,7 +10,7 @@ light_nucleus_option 1               # light nucleus configurations from differe
 roots 200.                           # collision energy (GeV)
 useQuarks 1                          # switch to use valence quarks
 siginNN_scale 1
-Polarization 1
+Polarization 2                       # 1: longitudinal Polarization; 2: transverse Polarization
 Q2 1.                                # the scale when evaluating the pdf
 b_min 0.                             # minimum impact parameter (fm)
 b_max 3.                             # maximum impact parameter (fm)

@@ -133,6 +133,7 @@ class Nucleus {
     void recenter_nucleus();
     void rotate_nucleus(real phi, real theta);
     void rotate_nucleus_3D(real phi, real theta, real gamma);
+    void Exchange_Y_Z_nucleus();
 
     void accelerate_nucleus(real ecm, int direction);
     void accelerate_dipole(real ecm, int direction);

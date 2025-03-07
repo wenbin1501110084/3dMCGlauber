@@ -217,6 +217,10 @@ void Nucleus::generate_nucleus_3d_configuration() {
         real gamma = 2 * M_PI * ran_gen_ptr->rand_uniform();
         rotate_nucleus_3D(phi, theta, gamma);
     }
+    
+    if (std::abs(Pol_) == 2) { // Do the Transverse polarization
+        Exchange_Y_Z_nucleus();
+    }
 }
 
 void Nucleus::recenter_nucleus() {
@@ -287,6 +291,20 @@ void Nucleus::rotate_nucleus_3D(real phi, real theta, real gamma) {
         nucleon_i->set_x(x_vec);
     }
 }
+
+void Nucleus::Exchange_Y_Z_nucleus() {
+    // Do the Transverse polarization
+    for (auto &nucleon_i : nucleon_list_) {
+        auto x_vec = nucleon_i->get_x();
+        real y_temp = x_vec[2];
+        //x_vec[1] = x_new;
+        x_vec[2] = -x_vec[3];
+        x_vec[3] = y_temp;
+        nucleon_i->set_x(x_vec);
+    }
+}
+
+
 
 void Nucleus::sample_fermi_momentum() {
     const real pi2_3 = 3. * M_PI * M_PI;
